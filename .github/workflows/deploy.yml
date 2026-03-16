@@ -1,0 +1,35 @@
+name: Deploy Fable Config
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'openclaw/**'
+      - 'deploy.sh'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Lightsail
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.LIGHTSAIL_HOST }}
+          username: ubuntu
+          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          script: |
+            cd /home/ubuntu
+            if [ -d design-manager ]; then
+              cd design-manager && git fetch origin main && git reset --hard origin/main
+            else
+              git clone -b main https://github.com/Personaut/design-manager.git design-manager
+            fi
+            rsync -av --delete \
+              /home/ubuntu/design-manager/openclaw/workspace/ \
+              /home/ubuntu/.openclaw/workspace/ \
+              --exclude '.env' \
+              --exclude 'memory/' \
+              --exclude 'sessions/' \
+              --exclude 'cacert.pem'
+            openclaw gateway restart
+            echo "Fable config deployed successfully"
