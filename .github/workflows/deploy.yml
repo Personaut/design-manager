@@ -28,6 +28,7 @@ jobs:
               /home/ubuntu/design-manager/openclaw/workspace/ \
               /home/ubuntu/.openclaw/workspace/ \
               --exclude '.env' \
+              --exclude 'credentials.json' \
               --exclude 'memory/' \
               --exclude 'sessions/' \
               --exclude 'cacert.pem'

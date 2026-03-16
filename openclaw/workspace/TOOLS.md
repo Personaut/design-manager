@@ -1,50 +1,50 @@
 # TOOLS.md - Fable's Toolkit
 
+## Jira
+
+- **Instance:** https://zivia.atlassian.net
+- **Email:** anthony@zivia.ai
+- **API Token:** Read from `credentials.json` in workspace
+- **Project:** PRODUCT
+- **Auth:** Use Basic auth — base64 encode `email:apiToken`
+- **Label for dev agent:** `ai-dev` (issues with this label get auto-dispatched)
+
+To make API calls to Jira, read credentials from `credentials.json` and use:
+```
+Authorization: Basic base64(email:apiToken)
+```
+
+## GitHub
+
+- **Repos:** Personaut/test-repository, Personaut/design-manager
+- **PRs:** Dev agent creates PRs with labels `dev-agent` and `automated`
+
 ## Design Skills
 
 ### PRD Writing
-When asked to write a PRD, include:
-- Problem statement (what user pain are we solving?)
-- Success metrics (how do we know it worked?)
-- User stories (as a [user], I want [action], so that [outcome])
-- Scope — what is in v1 and what is not
-- Design requirements — layout, interactions, accessibility
-- Edge cases and error states
-- Open questions
+When asked to write a PRD, use the `prd-writer` skill.
 
 ### Design Critique
-When reviewing designs or code output:
-1. Start with what works well (the "yes, and...")
-2. Identify usability concerns with specific suggestions
-3. Check accessibility — contrast, touch targets, screen reader flow
-4. Consider responsive behavior — mobile, tablet, desktop
-5. Look at loading, empty, and error states
-6. End with priority: what MUST change vs what COULD improve
+When reviewing designs or code, use the `design-critique` skill.
 
 ### User Story Writing
-Format: `As a [persona], I want [action], so that [benefit].`
-Always include acceptance criteria:
-- Given [context], when [action], then [expected result]
+When breaking down features, use the `user-stories` skill.
 
-### Design System Thinking
-When proposing UI:
-- Reference existing patterns first — do not reinvent
-- Propose tokens (colors, spacing, type scale) not one-off values
-- Think about the component, not just the page
-- Name things clearly — future-you will thank present-you
+### Graphic Design
+When creating visual concepts, use the `graphic-design` skill.
 
-## Integrations
+### Character Design
+When designing 2D animated characters, use the `character-design` skill.
 
-### Jira
-- Instance: https://personaut.atlassian.net
-- Can create and manage tickets
-- Label tasks with `dev-agent` to auto-dispatch to the dev pipeline
+### Standup Reports
+When writing status updates, use the `standup-report` skill.
 
-### GitHub
-- Repos: Personaut/test-repository, Personaut/design-manager
-- Can review PRs and provide feedback
+### Telegram Chat
+When messaging on Telegram, always follow the `telegram-chat` skill for tone and length.
 
-### Dev Agent Pipeline
-- Send tasks to `dev-tasks-queue` via SQS
-- Receive results from `dev-results-queue`
-- Tasks get planned, coded, reviewed, and PR'd automatically
+## Dev Agent Pipeline
+
+- Tasks with label `ai-dev` in Jira get polled every 15 minutes
+- Dispatched through SQS to the dev manager Lambda
+- Code is generated, reviewed, and PRs are created automatically
+- Results come back through the `dev-results-queue`

@@ -31,6 +31,7 @@ rsync -av --delete \
     "$REPO_DIR/openclaw/workspace/" \
     "$OPENCLAW_DIR/" \
     --exclude '.env' \
+    --exclude 'credentials.json' \
     --exclude 'memory/' \
     --exclude 'sessions/' \
     --exclude 'cacert.pem'
