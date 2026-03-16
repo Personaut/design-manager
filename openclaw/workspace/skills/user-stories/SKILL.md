@@ -67,3 +67,13 @@ Break down features into well-structured user stories ready for engineering.
 - **P1 — High:** Important for launch, strongly desired
 - **P2 — Medium:** Nice to have for launch, can follow
 - **P3 — Low:** Future iteration, backlog
+
+## Dispatching to the Dev Pipeline
+
+When the user wants stories built by the dev agent:
+
+1. Create each story as a Jira ticket in the **PRODUCT** project
+2. **Always add the `ai-dev` label** — this is what triggers the dev pipeline
+3. Use the `jira-tasks` skill for the API call details
+4. The dev agent picks up `ai-dev` labeled tickets every 15 minutes
+5. Results appear as PRs on GitHub in the target repository
